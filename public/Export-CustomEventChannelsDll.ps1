@@ -19,14 +19,14 @@ function Export-CustomEventChannelsDll {
         mkdir "$Path\dlltemp\" > $null
         cd "$Path\dlltemp"
 
-        & "$SDKSource\mc.exe" $SourceManifest
-        & "$SDKSource\mc.exe" -css CustomEventChannels.DummyEvent $SourceManifest
+        & "$SDKSource\mc.exe" $SourceManifest > $null
+        & "$SDKSource\mc.exe" -css CustomEventChannels.DummyEvent $SourceManifest > $null
         & "$SDKSource\rc.exe" CustomEventChannels.rc > $null
-        & "$CSCSource\csc.exe" /win32res:CustomEventChannels.res /unsafe /target:library /out:CustomEventChannels.dll C:CustomEventChannels.cs
+        & "$CSCSource\csc.exe" /win32res:CustomEventChannels.res /unsafe /target:library /out:CustomEventChannels.dll C:CustomEventChannels.cs > $null
 
-        mv CustomEventChannels.dll $Path\CustomEventChannels.dll
+        mv CustomEventChannels.dll $Path\CustomEventChannels.dll -Force
         cd $origPath
-        rmdir "$Path\dlltemp\" -Force
+        rmdir "$Path\dlltemp\" -Recurse -Force
     }
     
     end {
