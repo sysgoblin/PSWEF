@@ -44,7 +44,9 @@ function Export-WEFManifest {
         $xml.AppendChild($dec) # declaration
 
         $instrumentationManifest = $xml.CreateElement("instrumentationManifest") # instrumentationManifest node
-        $instrumentationManifest.SetAttribute('xsi:schemaLocation',"http://schemas.microsoft.com/win/2004/08/events eventman.xsd")
+        $att1 = $xml.CreateAttribute("xsi", "schemaLocation", "http://www.w3.org/2001/XmlSchema-instance")
+        $att1.Value = "http://schemas.microsoft.com/win/2004/08/events eventman.xsd"
+        $instrumentationManifest.Attributes.Append($att1) # to append xsi to schemaLocation
         $instrumentationManifest.SetAttribute("xmlns","http://schemas.microsoft.com/win/2004/08/events")
         $instrumentationManifest.SetAttribute("xmlns:win","http://manifests.microsoft.com/win/2004/08/windows/events")
         $instrumentationManifest.SetAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance")
