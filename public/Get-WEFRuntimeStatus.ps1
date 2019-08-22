@@ -1,8 +1,12 @@
 function Get-WEFRuntimeStatus {
     [CmdletBinding()]
     param (
+        [Parameter(Mandatory = $true)]
         [string]$WECServer,
+
+        [Parameter(Mandatory = $true)]
         [string]$Subscription,
+        
         [switch]$SourceStatus
     )
     
@@ -19,13 +23,13 @@ function Get-WEFRuntimeStatus {
             $res = Invoke-Expression $cmd
         }
 
-        if ($PSBoundParameters.SourceStatus) {
-            $sourcesRaw = $res[5..$res.length]
-            $sources = @()
-            for ($i=0; $i -lt $sourcesRaw.length; $i+=4) {
+        $sourcesRaw = $res[5..$res.length]
+        $sources = @()
+        for ($i=0; $i -lt $sourcesRaw.length; $i+=4) {
             $sources += ,($sourcesRaw[$i..($i+3)])
-            }
+        }
 
+        if ($PSBoundParameters.SourceStatus){
             $out = foreach ($s in $sources) {
                 [PSCustomObject]@{
                     Source          = $s[0].Trim()
@@ -39,8 +43,12 @@ function Get-WEFRuntimeStatus {
                 Subscription    = ($res[1] -replace 'Subscription: ').Trim()
                 RunTimeStatus   = ($res[2] -replace 'RunTimeStatus: ').Trim()
                 LastError       = ($res[3] -replace 'LastError: ').Trim()
+                EventSources    = $sources.Count
+                Active          = ($sources.ForEach({$_[1]}).Where({$_ -match '\sActive'})).Count
+                Inactive        = ($sources.ForEach({$_[1]}).Where({$_ -match '\sInactive'})).Count
             }
         }
+        
     }
     
     end {
