@@ -147,16 +147,3 @@ function Export-WEFManifest {
         $xml.save($ExportPath)
     }
 }
-
-# end
-# 	<localization>
-# 		<resources culture="en-US">
-# 			<stringTable>
-# 				<string id="level.Informational" value="Information"></string>
-# 				<string id="channel.System" value="System"></string>
-# 				<string id="Publisher.EventMessage" value="Prop_UnicodeString=%1;%n&#xA;                  Prop_UInt32=%2;%n"></string>
-# 				<string id="Custom Forwarded Events.event.100.message" value="Prop_UnicodeString=%1;%n&#xA;                  Prop_UInt32=%2;%n"></string>
-# 			</stringTable>
-# 		</resources>
-# 	</localization>
-# </instrumentationManifest>

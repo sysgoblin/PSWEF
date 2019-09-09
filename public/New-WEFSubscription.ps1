@@ -1,4 +1,4 @@
-function Create-WEFSubscription {
+function New-WEFSubscription {
     # generate subscription from declarations/xpath
     [CmdletBinding()]
     param (
