@@ -35,21 +35,43 @@ function Get-WEFSubscription {
                 $out = $res
             } else { 
                 foreach ($r in [xml]$res) {
+                    $nonDomainSddl = try { (ConvertFrom-SddlString $r.Subscription.AllowedSourceNonDomainComputers).DiscretionaryAcl -join ', ' } catch {}
+                    $domainSddl = try { (ConvertFrom-SddlString $r.Subscription.AllowedSourceDomainComputers).DiscretionaryAcl -join ', '  } catch {}
+
+                    if ($PSBoundParameters.WECServer) {
+                        $logInfo = Get-WEFLogInfo -WECServer $WECServer -LogFile $r.Subscription.LogFile
+                    } else {
+                        $logInfo = Get-WEFLogInfo -LogFile $r.Subscription.LogFile
+                    }
+
                     $out = [PSCustomObject]@{
-                        SubscriptionId                  = $r.Subscription.SubscriptionId
-                        SubscriptionType                = $r.Subscription.SubscriptionType           
-                        Description                     = $r.Subscription.Description
-                        Enabled                         = $r.Subscription.Enabled
-                        ConfigurationMode               = $r.Subscription.ConfigurationMode
-                        Delivery                        = $null
-                        Query                           = $r.Subscription.Query.'#cdata-section'
-                        ReadExistingEvents              = $r.Subscription.ReadExistingEvents
-                        TransportName                   = $r.Subscription.TransportName
-                        ContentFormat                   = $r.Subscription.ContentFormat
-                        Locale                          = $r.Subscription.Locale
-                        LogFile                         = $r.Subscription.LogFile
-                        AllowedSourceNonDomainComputers = $r.Subscription.AllowedSourceNonDomainComputers
-                        AllowedSourceDomainComputers    = $r.Subscription.AllowedSourceDomainComputers
+                        SubscriptionId                      = $r.Subscription.SubscriptionId
+                        SubscriptionType                    = $r.Subscription.SubscriptionType           
+                        Description                         = $r.Subscription.Description
+                        Enabled                             = $r.Subscription.Enabled
+                        ConfigurationMode                   = $r.Subscription.ConfigurationMode
+                        Delivery                            = $null
+                        Query                               = $r.Subscription.Query.'#cdata-section'
+                        ReadExistingEvents                  = $r.Subscription.ReadExistingEvents
+                        TransportName                       = $r.Subscription.TransportName
+                        ContentFormat                       = $r.Subscription.ContentFormat
+                        Locale                              = $r.Subscription.Locale
+                        LogFile                             = $r.Subscription.LogFile
+                        AllowedSourceNonDomainComputers     = $nonDomainSddl
+                        AllowedSourceNonDomainComputersSDDL = $r.Subscription.AllowedSourceNonDomainComputers
+                        AllowedSourceDomainComputers        = $domainSddl
+                        AllowedSourceDomainComputersSDDL    = $r.Subscription.AllowedSourceDomainComputers
+                        LogCreation                         = $logInfo.LogCreation
+                        LogLastAccess                       = $logInfo.LogLastAccess
+                        LogLastWrite                        = $logInfo.LogLastWrite
+                        LogFilesize                         = $logInfo.LogFilesize
+                        LogNumberOfRecords                  = $logInfo.LogNumberOfRecords
+                        LogChannelAccess                    = $logInfo.LogChannelAccess
+                        LogChannelAccessSDDL                = $logInfo.LogChannelAccessSDDL
+                        LogFilePath                         = $logInfo.LogFilePath
+                        LogRetention                        = $logInfo.LogRetention
+                        LogAutoBackup                       = $logInfo.LogAutoBackup
+                        LogMaxSize                          = $logInfo.LogMaxSize
                     } 
 
                     $deliveryObj = @()
