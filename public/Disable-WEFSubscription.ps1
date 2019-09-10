@@ -12,7 +12,7 @@ function Disable-WEFSubscription {
         $cmd = "wecutil ss $Subscription /e:false"
 
         if ($PSBoundParameters.WECServer) {
-            Invoke-Command -ComputerName $WECServer -ScriptBlock { $args[0] } -ArgumentList $cmd
+            Invoke-Command -ComputerName $WECServer -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd
         } else {
             Invoke-Expression $cmd
         }
