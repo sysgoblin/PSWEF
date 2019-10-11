@@ -31,5 +31,6 @@ function Get-WEFSDDL {
     
     end {
         # return string
+        return $sddl
     }
 }

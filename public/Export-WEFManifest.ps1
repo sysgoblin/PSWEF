@@ -26,8 +26,7 @@ function Export-WEFManifest {
         if ($over7) {
             $ch = $over7.Name
             $chM = $over7.group.Subscription
-            Write-Error "Provider $ch over 7 channels $($chM -join ', ')"
-            exit
+            throw "Provider `"$ch`" over 7 channels $($chM -join ', ')" 
         }
 
         # channel names valid (provider-channel-name)

@@ -33,7 +33,7 @@ function Get-WEFLogInfo {
         LogLastWrite = [datetime]$res2Parsed.lastWriteTime
         LogFilesize = $res2Parsed.fileSize
         LogNumberOfRecords = $res2Parsed.numberOfLogRecords
-        LogChannelAccess = ((ConvertFrom-SddlString $res1Parsed.channelAccess).DiscretionaryAcl -join ', ')
+        LogChannelAccess = (ConvertFrom-SddlString $res1Parsed.channelAccess).DiscretionaryAcl
         LogChannelAccessSDDL = $res1Parsed.channelAccess
         LogFilePath = $res1Parsed.logFileName
         LogRetention = $res1Parsed.retention

@@ -3,30 +3,89 @@ function Set-WEFSubscription {
     param (
         [string]$WECServer,
         [string]$Subscription,
-        [ValidateSet('True', 'False')]
-        [string]$Retention,
-        [ValidateSet('True', 'False')]
-        [string]$AutoBackup,
-        [ValidateRange(0,1600)]
-        [int]$MaxSize
+
+        # update from config file
+        [string]$ConfigurationFile,
+        # description of subscription /d:
+        [string]$Description,
+        # configuration mode type, dont declare custom /cm:
+        [ValidateSet('Normal','MinLatency','MinBandwidth')]
+        [switch]$ConfigurationMode,
+        # query /q:
+        [string]$Query,
+        # format /cf:
+        [ValidateSet('Events','RenderedText')]
+        [string]$Format,
+        # read existing events /ree:
+        [ValidateSet('True','False')]
+        [string]$ReadExistingEvents,
+
+        # custom config options
+        # delivery mode /dm:
+        [Parameter(ParameterSetName = 'Custom')]
+        [ValidateSet('Push','Pull')]
+        [string]$DeliveryMode,
+        # max items /dmi:
+        [Parameter(ParameterSetName = 'Custom')]
+        [int]$DeliveryMaxItems,
+        # max latency /dmlt:
+        [Parameter(ParameterSetName = 'Custom')]
+        [int]$DeliveryMaxLatency,
+        # heartbeat interval /hi:
+        [Parameter(ParameterSetName = 'Custom')]
+        [int]$HeartbeatInterval,
+        
+        #transport type
+        [ValidateSet('http','https')]
+        [string]$Transport
+        # event source
+        
     )
 
-    process {
-        # check proposed config
-        $cmd = "wevtutil sl $sub"
+    $cmd = "wecutil ss $Subscription "
 
-        if ($PSBoundParameters['Retention']) { $cmd += " /rt:$Retention"}
-        if ($PSBoundParameters['AutoBackup']) { $cmd += " /ab:$AutoBackup"}
-        if ($PSBoundParameters['MaxSize']) { 
-            $size = $MaxSize * 1e+6
-            $cmd += " /ms:$size"
-        }
-
-        # if no wec server prompted, localhost
-        if ($PSBoundParameters.WECServer) {
-            $res += Invoke-Command -ComputerName $WECServer -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd
-        } else {
-            $res += Invoke-Expression $cmd
-        }
+    if (($PSCmdlet.ParameterSetName -eq 'Custom') -and !($PSBoundParameters['ConfigurationMode'])) {
+        $cmd += "/cm:Custom "
+    } elseif ((($PSCmdlet.ParameterSetName -eq 'Custom') -and $PSBoundParameters['ConfigurationMode'])) {
+        Write-Error "Cannot have custom configuration options and standard configuration option declared."
+        throw
     }
+
+    switch ($PSBoundParameters.Keys) {
+        ConfigurationFile   { $cmd += "/c:$ConfigurationFile " }
+        Description         { $cmd += "/d:$Description " }
+        Query               { $cmd += "/q:$Query " }
+        Format              { $cmd += "/cf:$Format " }
+        ReadExistingEvents  { $cmd += "/ree:$ReadExistingEvents " }
+        # custom
+        DeliveryMode        { $cmd += "/dm:$DeliveryMode " }
+        DeliveryMaxItems    { $cmd += "/dmi:$DeliveryMaxItems " }
+        DeliveryMaxLatency  { $cmd += "/dmlt:$DeliveryMaxLatency " }
+        HeartbeatInterval   { $cmd += "/hi:$HeartbeatInterval " }
+    }
+
+    if ($PSBoundParameters['ReadExistingEvents']) {
+        $cmd += "/ree:$ReadExistingEvents "
+    }
+
+
+    if ($PSBoundParameters['WECServer']) {
+        try {
+            $res += Invoke-Command -ComputerName $WECServer -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd
+            Write-Output "Updated $Subscription"
+        } catch {
+            Write-Error "Error updating $Subscription"
+            $_.Exception.Messaage
+            throw
+        }
+    } else {
+        try {
+            $res += Invoke-Expression $cmd
+            Write-Output "Updated $Subscription"
+        } catch {
+            Write-Error "Error updating $Subscription"
+            $_.Exception.Messaage
+            throw
+        }
+    }    
 }

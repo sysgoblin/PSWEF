@@ -35,8 +35,8 @@ function Get-WEFSubscription {
                 $out = $res
             } else { 
                 foreach ($r in [xml]$res) {
-                    $nonDomainSddl = try { (ConvertFrom-SddlString $r.Subscription.AllowedSourceNonDomainComputers).DiscretionaryAcl -join ', ' } catch {}
-                    $domainSddl = try { (ConvertFrom-SddlString $r.Subscription.AllowedSourceDomainComputers).DiscretionaryAcl -join ', '  } catch {}
+                    $nonDomainSddl = try { (ConvertFrom-SddlString $r.Subscription.AllowedSourceNonDomainComputers).DiscretionaryAcl } catch {}
+                    $domainSddl = try { (ConvertFrom-SddlString $r.Subscription.AllowedSourceDomainComputers).DiscretionaryAcl } catch {}
 
                     if ($PSBoundParameters.WECServer) {
                         $logInfo = Get-WEFLogInfo -WECServer $WECServer -LogFile $r.Subscription.LogFile
