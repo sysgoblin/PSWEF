@@ -6,13 +6,13 @@ function Export-CustomEventChannelsDll {
         [string]$CSCSource = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319",
         [string]$Path
     )
-    
+
     begin {
         # validate paths
         # test dependencies
         # copy source manifest to local dir if on net share
     }
-    
+
     process {
         # make temp dir to work in
         $origPath = pwd
@@ -28,7 +28,7 @@ function Export-CustomEventChannelsDll {
         cd $origPath
         rmdir "$Path\dlltemp\" -Recurse -Force
     }
-    
+
     end {
         # output deets
     }
