@@ -4,7 +4,7 @@ PSWEF is a PowerShell module for querying and administering Windows Event Forwar
 ## Usage examples
 ### List all subscriptions managed by the specified Windows Event Collector Server.
 ```powershell
-PS C:\> Get-WEFSubscription -WECServer WECSERVER01 -List
+PS C:\> Get-WEFSubscription -Server Server01 -List
 
 Subscription-One
 Subscription-Two
@@ -13,7 +13,7 @@ Subscription-Three
 
 ### Return details for the specified subscription. Add param ```-Format XML``` to get the raw XML of the subscription.
 ```powershell
-PS C:\> Get-WEFSubscription -WECServer WECSERVER01 -Subscription Example-Subscription
+PS C:\> Get-WEFSubscription -Server Server01 -Subscription Example-Subscription
 
 SubscriptionId                  : Example-Subscription
 SubscriptionType                : SourceInitiated

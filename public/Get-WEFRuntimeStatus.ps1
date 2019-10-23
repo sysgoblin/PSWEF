@@ -8,6 +8,7 @@ function Get-WEFRuntimeStatus {
         Position = 0)]
         [string]$Subscription,
 
+        [Parameter(Mandatory = $false)]
         [switch]$SourceStatus
     )
 
