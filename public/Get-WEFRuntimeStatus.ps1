@@ -1,19 +1,20 @@
 function Get-WEFRuntimeStatus {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
-        [string]$WECServer,
+        [Parameter(Mandatory = $false)]
+        [string]$Server,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true,
+        Position = 0)]
         [string]$Subscription,
-        
+
         [switch]$SourceStatus
     )
-    
+
     $cmd = "wecutil gr $Subscription"
     # get subscription runtime status
-    if ($PSBoundParameters.WECServer) {
-        $raw = Invoke-Command -ComputerName $WECServer -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd
+    if ($PSBoundParameters.Server) {
+        $raw = Invoke-Command -ComputerName $Server -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd
     } else {
         $raw = Invoke-Expression $cmd
     }
@@ -37,7 +38,7 @@ function Get-WEFRuntimeStatus {
 
 
     $sources = [regex]::Matches($res,$pattern,'Multiline') | % {
-        $arr = $_.Groups | select -skip 1 -exp value 
+        $arr = $_.Groups | select -skip 1 -exp value
         5 | select @props
     }
 
@@ -55,7 +56,7 @@ function Get-WEFRuntimeStatus {
         }
 
         [regex]::Matches($res,$subPattern,'Multiline') | % {
-            $arr = $_.Groups | select -skip 1 -exp value 
+            $arr = $_.Groups | select -skip 1 -exp value
             5 | select @props
         }
     }

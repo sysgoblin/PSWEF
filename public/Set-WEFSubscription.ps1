@@ -1,7 +1,7 @@
 function Set-WEFSubscription {
     [CmdletBinding()]
     param (
-        [string]$WECServer,
+        [string]$Server,
         [string]$Subscription,
 
         # update from config file
@@ -34,12 +34,12 @@ function Set-WEFSubscription {
         # heartbeat interval /hi:
         [Parameter(ParameterSetName = 'Custom')]
         [int]$HeartbeatInterval,
-        
+
         #transport type
         [ValidateSet('http','https')]
         [string]$Transport
         # event source
-        
+
     )
 
     $cmd = "wecutil ss $Subscription "
@@ -69,9 +69,9 @@ function Set-WEFSubscription {
     }
 
 
-    if ($PSBoundParameters['WECServer']) {
+    if ($PSBoundParameters['Server']) {
         try {
-            $res += Invoke-Command -ComputerName $WECServer -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd
+            $res += Invoke-Command -ComputerName $Server -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd
             Write-Output "Updated $Subscription"
         } catch {
             Write-Error "Error updating $Subscription"
@@ -87,5 +87,5 @@ function Set-WEFSubscription {
             $_.Exception.Messaage
             throw
         }
-    }    
+    }
 }

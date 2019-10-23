@@ -2,7 +2,7 @@ function New-WEFSubscription {
     # generate subscription file from declarations/xpath
     [CmdletBinding()]
     param (
-        [string]$WECServer,
+        [string]$Server,
         [string]$Name,
         [string]$Query,
         [ValidateSet('SourceInitiated','CollectorInitiated')]

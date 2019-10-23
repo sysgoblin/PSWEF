@@ -4,7 +4,7 @@ function Export-WEFManifest {
         [string]$Path,
         [string]$ExportPath
     )
-    
+
     begin {
         # get files and group LogFile
         $subscriptions = gci $Path *.xml
@@ -26,13 +26,13 @@ function Export-WEFManifest {
         if ($over7) {
             $ch = $over7.Name
             $chM = $over7.group.Subscription
-            throw "Provider `"$ch`" over 7 channels $($chM -join ', ')" 
+            throw "Provider `"$ch`" over 7 channels $($chM -join ', ')"
         }
 
         # channel names valid (provider-channel-name)
         # duplicate channel names
     }
-    
+
     process {
         # generate nodes from nested object/ht??
 
@@ -63,7 +63,7 @@ function Export-WEFManifest {
         foreach ($prov in $($subXml | group Provider | sort Name)) {
             $i++
             $pName = $prov.Name
-            
+
             $provider = $xml.CreateElement("provider")
             $provider.SetAttribute("name","$pName")
             $guid = (New-Guid).guid # guid for provider
@@ -140,7 +140,7 @@ function Export-WEFManifest {
         $stringTable.AppendChild($string2)
         $stringTable.AppendChild($string3)
     }
-    
+
     end {
         # output results
         $xml.save($ExportPath)

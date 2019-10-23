@@ -1,15 +1,15 @@
 function Get-WEFLogInfo {
     param (
-        [string]$WECServer,
+        [string]$Server,
         [string]$LogFile
     )
-    
+
     $cmd1 = "wevtutil gl $LogFile"
     $cmd2 = "wevtutil gli $LogFile"
 
-    if ($PSBoundParameters['WECServer']) {
-        $res1 = Invoke-Command -ComputerName $WECServer -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd1
-        $res2 = Invoke-Command -ComputerName $WECServer -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd2
+    if ($PSBoundParameters['Server']) {
+        $res1 = Invoke-Command -ComputerName $Server -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd1
+        $res2 = Invoke-Command -ComputerName $Server -ScriptBlock { Invoke-Expression $args[0] } -ArgumentList $cmd2
     } else {
         $res1 = Invoke-Expression $cmd1
         $res2 = Invoke-Expression $cmd2
@@ -26,7 +26,7 @@ function Get-WEFLogInfo {
         $propsParsed = ($_ -split ': ').Trim()
         $res2Parsed | Add-Member NoteProperty $propsParsed[0] $propsParsed[1]
     }
-    
+
     $resObj = [PSCustomObject]@{
         LogCreation = [datetime]$res2Parsed.creationTime
         LogLastAccess = [datetime]$res2Parsed.lastAccessTime
