@@ -1,4 +1,29 @@
 function Get-WEFSubscription {
+<#
+.SYNOPSIS
+Get details of Windows Event Subscription
+
+.DESCRIPTION
+Return details on subscription including type, query, delivery mode, transport method, log information and more.
+
+.PARAMETER Server
+The remote Windows Event Collector server
+
+.PARAMETER Subscription
+The subscription to return information on
+
+.PARAMETER List
+List all subscriptions available
+
+.PARAMETER SubscriptionXML
+Return XML of subscription
+
+.EXAMPLE
+Get-WEFSubscription -Subscription Example-Subscription
+
+Return subscription data on Example-Subscription
+#>
+
     [CmdletBinding()]
     param (
         [string]$Server,
@@ -9,8 +34,7 @@ function Get-WEFSubscription {
 
         [switch]$List,
 
-        [ValidateSet('XML','Object')]
-        [string]$Format
+        [switch]$SubscriptionXML
     )
 
     if ($PSBoundParameters.List) {
@@ -32,7 +56,7 @@ function Get-WEFSubscription {
             $res = Invoke-Expression $cmd
         }
 
-        if ($PSBoundParameters.Format -eq 'XML') {
+        if ($PSBoundParameters.SubscriptionXML) {
             $out = $res
         } else {
             $r = [xml]$res

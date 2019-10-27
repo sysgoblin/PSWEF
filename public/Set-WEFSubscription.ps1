@@ -1,4 +1,51 @@
 function Set-WEFSubscription {
+<#
+.SYNOPSIS
+Set configuration optons for a Windows Event Subscription
+
+.DESCRIPTION
+Set configuration optons for a Windows Event Subscription
+
+.PARAMETER Server
+The remote Windows Event Collector server
+
+.PARAMETER Subscription
+The subscription to configure
+
+.PARAMETER ConfigurationFile
+Set the subscription based on provided configuration file
+
+.PARAMETER Description
+Set the description of the subscription
+
+.PARAMETER ConfigurationMode
+Set the configuration mode of the subscription
+
+.PARAMETER Query
+Set the xpath query of the subscription
+
+.PARAMETER Format
+Set subscription event data format
+
+.PARAMETER ReadExistingEvents
+Set whether the subscription should read already existing events on set
+
+.PARAMETER DeliveryMode
+Sets the Delivery Mode of the subscription
+
+.PARAMETER DeliveryMaxItems
+Sets the maximum delivery items of the subscription
+
+.PARAMETER DeliveryMaxLatency
+Sets the maximum latency of the subscription
+
+.PARAMETER HeartbeatInterval
+Sets the heartbeat interval of the subscription
+
+.PARAMETER Transport
+Sets the transport method of the subscription
+#>
+
     [CmdletBinding()]
     param (
         [string]$Server,

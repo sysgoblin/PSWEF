@@ -1,4 +1,32 @@
 function Set-WEFEventLog {
+<#
+.SYNOPSIS
+Set configuration options for a Windows Event Subscription log
+
+.DESCRIPTION
+Set configuration options for a Windows Event Subscription log
+
+.PARAMETER Server
+The remote Windows Event Collector server
+
+.PARAMETER Subscription
+The subscription which log is to be configured
+
+.PARAMETER Retention
+Set the retention of the log to true or false
+
+.PARAMETER AutoBackup
+Set the automatic backup of the log to true or false
+
+.PARAMETER MaxSize
+Set the maximum size of the log file in MB (maximum is 1600 MB)
+
+.EXAMPLE
+Set-WEFEventLog -Subscription Example-Subscription -Retention True
+
+Enable retention for Example-Subscription
+#>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]

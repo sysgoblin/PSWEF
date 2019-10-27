@@ -1,4 +1,54 @@
 function Get-WEFRuntimeStatus {
+<#
+.SYNOPSIS
+Return status of Subscription.
+
+.DESCRIPTION
+Return status of subscription including state, number of active sources and more. Optionally can include status of all sources.
+
+.PARAMETER Server
+The remote Windows Event Collector server
+
+.PARAMETER Subscription
+The subscription to return the runtime status of
+
+.PARAMETER SourceStatus
+Switch to show status of all sources
+
+.EXAMPLE
+PS C:\> Get-WEFRuntimeStatus -Subscription Example-Subscription
+
+Subscription  : Example-Subscription
+RunTimeStatus : Enabled
+LastError     : 0
+EventSources  : 120
+Active        : 80
+Inactive      : 40
+
+Return status of scubscription including number of sources and count of active/inactive
+
+.EXAMPLE
+PS C:\> Get-WEFRuntimeStatus -Subscription Example-Subscription
+
+Subscription  : Example-Subscription
+RunTimeStatus : Enabled
+LastError     : 0
+EventSources  : 120
+Active        : 80
+Inactive      : 40
+
+Return status of scubscription including number of sources and count of active/inactive
+
+.EXAMPLE
+PS C:\> Get-WEFRuntimeStatus -Subscription Example-Subscription -SourceStatus |  Select-Object Name, RunTimeStatus, LastHeartbeatTime
+
+Name    RunTimeStatus LastHeartbeatTime
+----    ------------- -----------------
+Comp01  Enabled       2010-12-12 01:01:01
+
+Return name, status and last heartbeat of all sources for Example-Subscription
+#>
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
