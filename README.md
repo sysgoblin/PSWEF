@@ -1,5 +1,7 @@
 # PSWEF
-PSWEF is a PowerShell module for querying and administering Windows Event Forwarding and Windows Event Collectors.
+PSWEF is a PowerShell module for querying and administering Windows Event Forwarding subscriptions and Windows Event Collectors.
+
+This module is very much currently a WIP.
 
 ## Usage examples
 ### List all subscriptions managed by the specified Windows Event Collector Server.
