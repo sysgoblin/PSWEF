@@ -42,6 +42,7 @@ function Set-WEFSubscription {
 
     )
 
+    $Script:ErrorActionPreference = "Stop"
     $cmd = "wecutil ss $Subscription "
 
     if (($PSCmdlet.ParameterSetName -eq 'Custom') -and !($PSBoundParameters['ConfigurationMode'])) {
@@ -63,11 +64,6 @@ function Set-WEFSubscription {
         DeliveryMaxLatency  { $cmd += "/dmlt:$DeliveryMaxLatency " }
         HeartbeatInterval   { $cmd += "/hi:$HeartbeatInterval " }
     }
-
-    if ($PSBoundParameters['ReadExistingEvents']) {
-        $cmd += "/ree:$ReadExistingEvents "
-    }
-
 
     if ($PSBoundParameters['Server']) {
         try {
