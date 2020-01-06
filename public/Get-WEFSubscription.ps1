@@ -28,7 +28,7 @@ Return subscription data on Example-Subscription
     param (
         [string]$Server,
 
-        [Parameter(Mandatory = $true,
+        [Parameter(Mandatory = $false,
         Position = 0)]
         [string]$Subscription,
 

@@ -29,10 +29,11 @@ Enable retention for Example-Subscription
 
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [string]$Server,
-        [Parameter(Mandatory = $true)]
-        [string]$Subscription,
+        [Parameter(Mandatory = $true,
+        ValueFromPipelineByPropertyName)]
+        [string]$LogFile,
         [ValidateSet('True', 'False')]
         [string]$Retention,
         [ValidateSet('True', 'False')]
@@ -43,7 +44,7 @@ Enable retention for Example-Subscription
 
     process {
         # check proposed config
-        $cmd = "wevtutil sl $sub"
+        $cmd = "wevtutil sl $LogFile"
 
         if ($PSBoundParameters['Retention']) { $cmd += " /rt:$Retention"}
         if ($PSBoundParameters['AutoBackup']) { $cmd += " /ab:$AutoBackup"}
